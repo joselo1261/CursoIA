@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     PLANTILLA DE MÓDULO DINÁMICO
+     ------------------------------------------------------------
+     Para crear un módulo nuevo:
+       1) Copiá este archivo y renombralo (ej: modulo5.html).
+       2) Cambiá la ÚNICA línea marcada abajo: el src del archivo de datos.
+       3) Creá data/<tu-modulo>.js (copiá data/modulo_demo.js de ejemplo).
+       4) Agregá una línea en js/nav-data.js con { label, href }.
+     No escribas nada en el <body>: el renderer construye todo.
+     ============================================================ -->
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Curso IA</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/module.css"/>
+<link rel="stylesheet" href="css/sidebar.css"/>
+<script src="js/nav-data.js" defer></script>
+<!-- ↓↓↓ ÚNICA LÍNEA QUE CAMBIÁS POR MÓDULO ↓↓↓ -->
+<script src="data/REEMPLAZAR_POR_TU_MODULO.js" defer></script>
+<!-- ↑↑↑ -->
+<script src="js/renderer.js" defer></script>
+<script src="js/sidebar.js" defer></script>
+<script src="js/module-search.js" defer></script>
+<script src="js/script.js" defer></script>
+</head>
+<body>
+<!-- El renderer construye header, nav, sidebar y contenido. No edites el body. -->
+</body>
+</html>

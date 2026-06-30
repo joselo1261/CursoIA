@@ -20,4 +20,6 @@ window.CURSO_NAV = [
   { label: "Glosario",                     href: "glosario.html" },
   { label: "Noticias",                     href: "noticias.html" },
   { label: "Contacto",                     href: "contacto.html" },
+  // ⚙️ TEMPORAL: demo del motor dinámico. Borrá esta línea cuando lo apruebes.
+  { label: "⚙️ Demo (motor dinámico)",     href: "modulo_demo.html" },
 ];

@@ -1357,3 +1357,14 @@ body.dark-mode nav ul li.dropdown .dropdown-menu a.active {
 @media (max-width: 600px){
   .site-footer .footer-logo{ height: 30px; }  /* mobile */
 }
+
+/* === Fix línea de tiempo: apilar badge / año / etiqueta en vertical ===
+   Antes el año y la etiqueta quedaban en la misma línea ("1950 Test de Turing").
+   Forzamos columna centrada. Aplica al Módulo 1 y a los módulos dinámicos. */
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.node .year { margin-top: .35rem; }
+.node .label { margin-top: .25rem; }
