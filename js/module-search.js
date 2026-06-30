@@ -43,6 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function hi(el, q) {
     if (!el) return;
+    // No tocar elementos que contienen otros elementos: reescribir su innerHTML
+    // con textContent los aplanaría (rompe la línea de tiempo, tarjetas, etc.).
+    if (el.children && el.children.length > 0) return;
     if (!el.dataset.orig) el.dataset.orig = el.textContent;
     const orig = el.dataset.orig;
     if (!q) { el.innerHTML = orig; return; }
