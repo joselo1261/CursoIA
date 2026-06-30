@@ -264,12 +264,58 @@ window.MODULO = {
 
 ---
 
-## Consejos
+## Consejos para tu primer módulo real
 
-- **IDs:** `p1`, `p2`, `p3`... siempre únicos dentro del módulo.
+- **Empezá simple.** 2-3 secciones con `parrafo`, `lista`, `tabla` y `callout`. Cuando
+  funcione, le sumás infografías (`linea-tiempo`, `tarjetas`, `riesgos`...).
+- **Una idea por sección.** Mejor varias secciones cortas que una gigante. Así el sidebar
+  queda útil y el lector no se pierde.
+- **Numerá los títulos** (`1.`, `2.`, `2.1.`...) para que el sidebar quede ordenado.
+- **El contenido es TUYO.** Escribí tus propios apuntes y resúmenes con tus palabras.
+  No copies y pegues el material original del curso (es material con derechos de su autor);
+  además, resumir con tus palabras se entiende y se recuerda mucho mejor.
+- **Reutilizá** `data/modulo_demo.js` como plantilla de bloques: copiás el que necesitás y
+  cambiás el contenido.
+
+## Detalles técnicos
+
+- **IDs:** `p1`, `p2`, `p3`... siempre únicos dentro del módulo (alimentan el sidebar).
 - **Imágenes:** van en la raíz del repo, ruta relativa (`"foto.png"`, sin `/` inicial).
 - **Tema:** no hardcodees colores; el diseño usa las variables de `css/style.css`.
-- **Algo muy custom:** usá el bloque `{ tipo: "html", html: "..." }`.
-- **Previsualizar:** Live Server o el deploy de Vercel (no `file://` directo desde OneDrive).
-- **Bloque nuevo:** si necesitás un componente que no está, se agrega en `js/renderer.js`
-  (un `tipo` nuevo en el objeto `BLOQUES`).
+- **Comas y llaves:** el archivo de datos es JavaScript. Una coma o `}` de menos rompe todo
+  el módulo. Cuidá que cada bloque termine en `,` y que abras/cierres bien `{ }` y `[ ]`.
+- **Algo muy custom:** usá el bloque `{ tipo: "html", html: "..." }` (con moderación).
+- **Bloque nuevo:** si necesitás un componente que no existe, se agrega un `tipo` en el
+  objeto `BLOQUES` de `js/renderer.js`.
+
+## Checklist antes de subir
+
+- [ ] Cada sección tiene un `id` único (`p1`, `p2`...).
+- [ ] El archivo de datos no tiene errores de sintaxis (comas/llaves) — abrí la consola
+      del navegador (F12) y revisá que no haya errores en rojo.
+- [ ] El **sidebar** lista las secciones del módulo y resaltan al hacer scroll.
+- [ ] El **buscador** interno encuentra texto del módulo.
+- [ ] Se ve bien en **claro y oscuro** (botón 🌙) y en **móvil** (ventana angosta).
+- [ ] Agregaste la línea en `js/nav-data.js`.
+- [ ] Lo previsualizaste con **Live Server** o en Vercel (no `file://` directo desde OneDrive).
+
+## Problemas comunes
+
+- **"Falta el contenido del módulo"** → el HTML no cargó el `data/<modulo>.js`, o el archivo
+  tiene un error de sintaxis. Revisá la línea `<script src="data/...">` y la consola (F12).
+- **El sidebar no muestra las secciones** → revisá que cada sección tenga `id` y `titulo`.
+- **Un bloque no aparece** → el `tipo` está mal escrito. La consola avisa
+  "tipo de bloque desconocido".
+- **Cambios que no se ven al previsualizar local** → es OneDrive sirviendo copias viejas.
+  Usá Live Server, o probá directo en Vercel (deploy fresco).
+
+## Cómo subirlo (deploy)
+
+```bash
+git add -A
+git commit -m "feat: agregar módulo 5 (Automatización con IA)"
+git push origin main
+```
+
+Cada `push` a `main` dispara el deploy automático en Vercel. En ~1 minuto está publicado.
+Si tras subir algo se ve raro, hacé `Ctrl+Shift+R` (hard refresh) antes de dar nada por roto.
