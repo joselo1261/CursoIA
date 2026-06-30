@@ -1358,13 +1358,29 @@ body.dark-mode nav ul li.dropdown .dropdown-menu a.active {
   .site-footer .footer-logo{ height: 30px; }  /* mobile */
 }
 
-/* === Fix línea de tiempo: apilar badge / año / etiqueta en vertical ===
-   Antes el año y la etiqueta quedaban en la misma línea ("1950 Test de Turing").
-   Forzamos columna centrada. Aplica al Módulo 1 y a los módulos dinámicos. */
-.node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* === Fix línea de tiempo (alta especificidad) ===
+   Apila badge / año / etiqueta en vertical y fuerza el círculo del badge.
+   Usamos ".milestones .node" para ganarle a cualquier regla a nivel ".node". */
+.milestones .node {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center;
+  gap: .3rem;
 }
-.node .year { margin-top: .35rem; }
-.node .label { margin-top: .25rem; }
+.milestones .badge {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px;
+  border-radius: 50% !important;
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin: 0 0 .2rem !important;
+  box-shadow: 0 6px 14px var(--shadow-color);
+}
+.milestones .year { display: inline-block; margin: 0; }
+.milestones .label { margin: .1rem 0 0; font-size: .9rem; opacity: .9; line-height: 1.25; }
