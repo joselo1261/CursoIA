@@ -25,8 +25,12 @@ glosario.html              # Glosario de términos
 noticias.html              # Noticias de IA
 contacto.html / contacto_dark.html  # Formulario de contacto (CSS/JS inline)
 
+_plantilla_modulo.html     # Plantilla para crear un módulo dinámico nuevo
+modulo_demo.html           # Demo del motor dinámico (TEMPORAL, borrar al terminar)
+COMO-CREAR-UN-MODULO.md    # Guía: cómo crear módulos con el motor dinámico
+
 css/                       # TODO el CSS vive acá
-  style.css                # Estilos base (tema claro/oscuro con variables CSS)
+  style.css                # Estilos base + componentes/infografías (tema claro/oscuro)
   sidebar.css              # Sidebar global tipo "docs" (sistema nuevo)
   module.css               # Buscador interno de módulos
   style_ML.css             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
@@ -35,8 +39,12 @@ js/                        # TODO el JS vive acá
   script.js                # JS base (navegación, buscador, tema, footer)
   nav-data.js              # Manifiesto: lista de módulos/unidades del sidebar global
   sidebar.js               # Construye el sidebar global tipo "docs"
+  renderer.js              # MOTOR dinámico: convierte data/<modulo>.js en página
   module-search.js         # Buscador interno de módulos
   script_ML.js             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
+
+data/                      # Contenido de los módulos dinámicos (solo datos, sin diseño)
+  modulo_demo.js           # Ejemplo de referencia
 
 favicon.svg                # Favicon (chispa de IA, degradé azul marino → azul)
 *.png / *.svg              # Imágenes (InoTech, portada, infografías) — siguen en la raíz
@@ -62,6 +70,32 @@ lista todos los módulos/unidades, con las secciones del módulo actual desplega
 - Markup requerido en la página: `<div class="container docs-page">` y dentro
   `<div class="docs-layout"> <aside id="docs-sidebar"><nav id="docs-nav"></nav></aside>
   <main id="docs-main">…secciones…</main> </div>`.
+
+## Motor de módulos dinámicos
+
+Para los módulos NUEVOS hay un motor que separa **contenido** de **diseño**: escribís
+solo datos y la página se arma sola. Ver la guía completa en
+[`COMO-CREAR-UN-MODULO.md`](COMO-CREAR-UN-MODULO.md).
+
+- **`data/<modulo>.js`** define `window.MODULO = { titulo, subtitulo, secciones: [...] }`.
+  Cada sección tiene `id`, `titulo` y `bloques` (bloques tipados: `parrafo`, `lista`,
+  `tabla`, `callout`, `imagen`, `linea-tiempo`, `pasos`, `tarjetas`, `riesgos`, etc.).
+- **`js/renderer.js`** lee `window.MODULO` y construye TODO (header, nav, buscador,
+  sidebar y secciones). Genera las mismas clases que `css/style.css` ya estiliza.
+- **`_plantilla_modulo.html`** es el shell a copiar. La ÚNICA línea que cambia por módulo
+  es `<script src="data/<modulo>.js" defer></script>`.
+- **Orden de carga (defer):** `nav-data.js` → `data/<modulo>.js` → `renderer.js` →
+  `sidebar.js` → `module-search.js` → `script.js`. El orden importa: el renderer arma el
+  DOM antes de que el sidebar y el buscador lo lean.
+- **Crear un módulo:** copiar la plantilla, apuntar el `src` de datos, crear `data/<modulo>.js`
+  y agregar una línea en `js/nav-data.js`. Nada de tocar HTML de estructura.
+- **Para un componente nuevo:** agregar un `tipo` en el objeto `BLOQUES` de `js/renderer.js`.
+- Los módulos 1-4 actuales son HTML hecho a mano (no usan el motor); conviven sin problema
+  porque el sidebar y el buscador leen el DOM, sin importar cómo se generó.
+
+> **Cuidado (bug ya resuelto):** el buscador (`module-search.js`) no debe reescribir el
+> `innerHTML` de elementos que contienen otros elementos; los aplanaba (rompía la línea de
+> tiempo). El guard `if (el.children.length > 0) return;` en `hi()` lo evita. No lo quites.
 
 ## Capa legacy `_ML` (en retirada)
 
