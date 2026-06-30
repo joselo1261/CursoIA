@@ -1,0 +1,128 @@
+/* ============================================================
+   module.css — Buscador interno de módulos (sticky + resaltado)
+   Extraído del inline de los módulos para centralizar estilos.
+   ============================================================ */
+#module-searchbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 8px 0 14px;
+  padding: 0 12px;
+  position: sticky;
+  top: var(--nav-h, 0px);
+  z-index: 900;
+  background: var(--bg-secondary-color, #fff);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+#module-searchbar input[type="search"] {
+  flex: 1;
+  min-width: 280px;
+  max-width: 820px;
+  padding: 10px 12px;
+  border: 1.5px solid #000;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: transparent;
+  color: inherit;
+}
+#module-clear {
+  padding: 8px 10px;
+  border: 1.5px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--bg-secondary-color, #fff);
+  color: var(--text-color, #111);
+}
+#module-clear:hover {
+  filter: brightness(0.97);
+}
+#module-stats {
+  margin: 0 12px 8px;
+  font-size: 0.9rem;
+  color: var(--muted-color, #6b7280);
+}
+#docs-main mark,
+#module-container mark {
+  background: #fff2ac;
+  color: inherit;
+  padding: 0 0.1em;
+  border-radius: 2px;
+}
+
+/* Evita que los títulos queden tapados por el header sticky */
+#docs-main h1,
+#docs-main h2,
+#docs-main h3,
+#docs-main h4,
+#module-container h1,
+#module-container h2,
+#module-container h3,
+#module-container h4 {
+  scroll-margin-top: calc(
+    var(--nav-h, 0px) + var(--searchbar-h, 0px) + 8px
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  #module-searchbar {
+    background: var(--bg-color, #0f1218);
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+  }
+  #module-searchbar input[type="search"] {
+    border-color: #fff;
+  }
+}
+
+/* Input y botón del buscador (antes en style_ML.css) */
+.ml-search-compact {
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 520px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.ml-clear-btn,
+#module-clear.ml-clear-btn {
+  margin-left: 8px;
+  vertical-align: middle;
+  background: #e5e7eb;
+  color: #111111;
+  border: 1.5px solid #9ca3af;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  transition: filter 0.15s ease, transform 0.05s ease;
+}
+.ml-clear-btn:hover {
+  filter: brightness(0.97);
+}
+.ml-clear-btn:active {
+  transform: translateY(1px);
+}
+
+/* Línea divisoria animada bajo el buscador */
+#module-searchbar {
+  padding-bottom: 8px;
+}
+#module-searchbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #e5e7eb, #9ca3af, #e5e7eb);
+  background-size: 200% 100%;
+  animation: moveLine 8s linear infinite;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+@keyframes moveLine {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

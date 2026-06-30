@@ -24,26 +24,53 @@ herramientas.html          # Catálogo de herramientas de IA
 glosario.html              # Glosario de términos
 noticias.html              # Noticias de IA
 contacto.html / contacto_dark.html  # Formulario de contacto (CSS/JS inline)
-style.css                  # Estilos base (tema claro/oscuro con variables CSS)
-style_ML.css               # Capa de estilos adicional (sidebar de módulos)
-script.js                  # JS base (navegación, buscador, tema)
-script_ML.js               # JS adicional (sidebar de módulos)
+
+css/                       # TODO el CSS vive acá
+  style.css                # Estilos base (tema claro/oscuro con variables CSS)
+  sidebar.css              # Sidebar global tipo "docs" (sistema nuevo)
+  module.css               # Buscador interno de módulos
+  style_ML.css             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
+
+js/                        # TODO el JS vive acá
+  script.js                # JS base (navegación, buscador, tema, footer)
+  nav-data.js              # Manifiesto: lista de módulos/unidades del sidebar global
+  sidebar.js               # Construye el sidebar global tipo "docs"
+  module-search.js         # Buscador interno de módulos
+  script_ML.js             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
+
 favicon.svg                # Favicon (chispa de IA, degradé azul marino → azul)
-*.png / *.svg              # Imágenes (InoTech, portada, infografías)
+*.png / *.svg              # Imágenes (InoTech, portada, infografías) — siguen en la raíz
 ```
 
-## Capas de estilos/JS (`_ML`)
+> **Migración en curso:** se está reemplazando el sidebar viejo (`_ML`) por un
+> **sidebar global tipo docs** (`css/sidebar.css` + `js/sidebar.js` + `js/nav-data.js`).
+> El **Módulo 1 ya está migrado** (no carga `_ML`). El resto (mód. 2-4 + `herramientas.html`)
+> todavía usa la capa `_ML` hasta replicar el patrón.
 
-Los módulos y `herramientas.html` cargan **dos capas**: la base (`style.css` + `script.js`)
-y una capa adicional con el sufijo `_ML` (`style_ML.css` + `script_ML.js`) que aporta el
-sidebar y funciones extra de los módulos.
+## Sidebar global (sistema nuevo)
 
-- El sufijo `_ML` **solo sobrevive en los assets** (`style_ML.css`, `script_ML.js`).
-  Las páginas HTML ya NO lo usan: tienen nombres limpios (`modulo1_introIA.html`, etc.).
-- Antes existían "versiones simples" duplicadas de cada módulo; **fueron eliminadas** y las
-  `_ML` se renombraron a los nombres limpios. No recrees duplicados salvo pedido explícito.
-- Páginas que cargan la capa `_ML`: los 4 módulos + `herramientas.html`. El resto
-  (`index`, `glosario`, `noticias`, `contacto`) usan solo la capa base.
+El sistema nuevo es un **sidebar tipo "docs"**: una sola barra lateral persistente que
+lista todos los módulos/unidades, con las secciones del módulo actual desplegadas debajo.
+
+- **`js/nav-data.js`** es el ÚNICO archivo que se edita para agregar una unidad: una
+  entrada `{ label, href }` por módulo. El sidebar se arma solo a partir de esa lista.
+- **`js/sidebar.js`** lee el manifiesto, detecta la página actual, lista sus secciones
+  (`<section class="module" id="...">` con su `<h2>`), resalta la activa al hacer scroll
+  y maneja el modo móvil (off-canvas).
+- **`css/sidebar.css`** estiliza el sidebar usando las variables de tema de `style.css`
+  (claro/oscuro automático).
+- Markup requerido en la página: `<div class="container docs-page">` y dentro
+  `<div class="docs-layout"> <aside id="docs-sidebar"><nav id="docs-nav"></nav></aside>
+  <main id="docs-main">…secciones…</main> </div>`.
+
+## Capa legacy `_ML` (en retirada)
+
+El sidebar viejo se servía con la capa `_ML` (`css/style_ML.css` + `js/script_ML.js`).
+
+- **Módulo 1 ya NO usa `_ML`**: migrado al sidebar global. Es la página de referencia.
+- Todavía cargan `_ML`: **módulos 2-4 + `herramientas.html`** (pendientes de migrar).
+- `index`, `glosario`, `noticias`, `contacto` nunca usaron `_ML` (solo capa base).
+- No recrees versiones duplicadas de los módulos salvo pedido explícito.
 
 ## Estilos y diseño
 
@@ -54,9 +81,14 @@ sidebar y funciones extra de los módulos.
 
 ## Reglas técnicas (no romper)
 
-- **Rutas siempre relativas** (`href="style.css"`, `href="favicon.svg"`). Nunca uses rutas
-  absolutas con `/` inicial: el sitio debe funcionar tanto en Vercel como abriendo el archivo.
-- Todos los assets viven en la **raíz** del repo (no hay subcarpetas).
+- **Rutas siempre relativas** (`href="css/style.css"`, `src="js/script.js"`,
+  `href="favicon.svg"`). Nunca uses rutas absolutas con `/` inicial: el sitio debe
+  funcionar tanto en Vercel como abriendo el archivo.
+- **CSS** vive en `css/` y **JS** en `js/`. **Sin CSS/JS inline en las páginas**: extraé
+  todo a un archivo dentro de `css/` o `js/`.
+- Las **imágenes y el favicon** siguen en la **raíz** del repo. Ojo: las rutas dentro de un
+  `.css` se resuelven relativas al `.css`; las rutas dentro de un `.js` se resuelven
+  relativas al HTML que lo carga.
 - El `<link rel="icon" type="image/svg+xml" href="favicon.svg">` va en el `<head>` de cada
   página. Si creás una página nueva, agregalo.
 
