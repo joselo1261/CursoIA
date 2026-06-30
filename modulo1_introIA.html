@@ -36,7 +36,11 @@
 
 /* FIX dropdown above module searchbar */
 nav .dropdown .dropdown-menu, nav .dropdown .dropdown-content { position: absolute; z-index: 1200; }
-</style></head>
+</style>
+  <!-- ML sidebar (actualizado 2025-08-30T22:36:44.969086) -->
+  <link rel="stylesheet" href="style_ML.css">
+  <script src="script_ML.js" defer></script>
+</head>
 <body>
 <header>
 <h1>Módulo 1: Introduciendo la Inteligencia Artificial</h1>
@@ -46,25 +50,19 @@ nav .dropdown .dropdown-menu, nav .dropdown .dropdown-content { position: absolu
 <nav>
 <ul id="main-nav-list">
 <li><a href="index.html">Inicio</a></li>
-<li class="dropdown">
-<a class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="">Contenido</a>
-<ul class="dropdown-menu">
-<li><a href="#p1">1. ¿Qué es la Inteligencia Artificial?</a></li>
-<li><a href="#p2">2. Historia de la IA</a></li>
-<li><a href="#p3">3. Fundamentos: Machine Learning y Deep Learning</a></li>
-<li><a href="#p4">4. La IA Generativa</a></li>
-<li><a href="#p5">5. Las Tres Olas del Peligro de la IA</a></li>
-<li><a href="#p6">6. Beneficios de la IA</a></li>
-<li><a href="#p7">7. La Era de los Agentes</a></li>
-</ul>
-</li>
 <li><a href="herramientas.html">Herramientas</a></li>
 <li><a href="glosario.html">Glosario</a></li><li><a href="contacto.html">Contacto</a></li>
 </ul>
 <button id="theme-toggle">🌙</button>
 <button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
-</nav><div id="module-searchbar"><input aria-label="Buscar en este módulo" id="module-search" placeholder="Buscar en este módulo…" type="search"/><button id="module-clear" type="button">Limpiar</button></div><div aria-live="polite" id="module-stats"></div>
-<main id="module-container">
+</nav><div id="module-searchbar"><input aria-label="Buscar en este módulo" id="module-search" placeholder="Buscar en este módulo…" type="search"/ class="ml-search-compact"><button id="module-clear" type="button" class="ml-clear-btn">Limpiar</button></div><div aria-live="polite" id="module-stats"></div>
+<div class="ml-layout" data-ml="true">
+  <aside id="ml-sidebar" class="ml-sidebar ml-theme-light" aria-label="Navegación de contenidos">
+    <div class="ml-title">Contenido</div>
+    <nav id="ml-nav" class="ml-nav" role="navigation" aria-label="Secciones del módulo"></nav>
+  </aside>
+  <main id="ml-main" class="ml-main">
+
 <section class="module" id="p1">
 <h2>1. ¿Qué es la Inteligencia Artificial?</h2>
 <p>
@@ -728,7 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('module-search');
   const clearBtn = document.getElementById('module-clear');
   const stats = document.getElementById('module-stats');
-  const container = document.getElementById('module-container') || document.querySelector('main') || document.body;
+  const container = document.getElementById('ml-main') || document.getElementById('module-container') || document.querySelector('main') || document.body;
   const navEl = document.querySelector('nav');
 
   function updateOffsets(){
@@ -758,7 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
       out += orig.slice(last,start) + '<mark>' + orig.slice(start,end) + '</mark>'; last=end; from=idx+qn.length; } out+=orig.slice(last); el.innerHTML=out; }
 
   function scrollToFirstMatch(){
-    const first = document.querySelector('#module-container mark');
+    const first = container.querySelector('mark');
     if(first){
       first.scrollIntoView({behavior:'smooth', block:'start'});
       const cs = getComputedStyle(document.documentElement);
@@ -787,7 +785,10 @@ document.addEventListener('DOMContentLoaded', () => {
   clearBtn.addEventListener('click', () => { input.value=''; input.focus(); apply(true); });
   apply(false);
 });
-</script></main>
+</script>
+  </main>
+</div>
+
 </div>
 <script src="script.js"></script>
 </body>

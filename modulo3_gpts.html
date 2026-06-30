@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Módulo 3: GPTs</title>
@@ -39,37 +39,40 @@ nav .dropdown .dropdown-menu, nav .dropdown .dropdown-content { position: absolu
 
 /* Keep module3 titles visible */
 section[id^="m3_"]{ scroll-margin-top: calc(var(--nav-h, 0px) + var(--searchbar-h, 0px) + 12px); }
-</style></head>
+</style>
+
+<link rel="stylesheet" href="style_ML.css">
+<script src="script_ML.js" defer></script>
+<script src="script.js" defer></script>
+</head>
 <body>
-<!-- Header consistente -->
 <header>
 <h1>Módulo 3: GPTs</h1>
 <p>Guía de Inteligencia Artificial - Curso 2025</p>
 </header>
 <div class="container">
-<!-- NAV igual a los otros módulos (dropdown + dark mode + hamburguesa) -->
 <nav>
-<ul id="main-nav-list">
-<li><a href="index.html">Inicio</a></li>
-<li class="dropdown">
-<a class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="">Contenido</a>
-<ul class="dropdown-menu">
-<li><a href="#m3_p1">1. Introducción a los GPTs</a></li>
-<li><a href="#m3_p2">2. Interfaz del GPT Builder</a></li>
-<li><a href="#m3_p3">3. Instrucciones</a></li>
-<li><a href="#m3_p4">4. Creando un GPT Sencillo</a></li>
-<li><a href="#m3_p5">5. Un buen Dataset</a></li>
-<li><a href="#m3_p6">6. Construyendo un GPT con Documentación</a></li>
-<li><a href="#m3_p7">7. Seguridad y Jailbreak</a></li>
-</ul>
-</li>
-<li><a href="herramientas.html">Herramientas</a></li>
-<li><a href="glosario.html">Glosario</a></li><li><a href="contacto.html">Contacto</a></li>
-</ul>
-<button id="theme-toggle">🌙</button>
-<button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
-</nav><div id="module-searchbar"><input aria-label="Buscar en este módulo" id="module-search" placeholder="Buscar en este módulo…" type="search"/><button id="module-clear" type="button">Limpiar</button></div><div aria-live="polite" id="module-stats"></div>
-<main id="module-container">
+  <ul id="main-nav-list">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="herramientas.html">Herramientas</a></li>
+    <li><a href="glosario.html">Glosario</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button id="theme-toggle">🌙</button>
+  <button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
+</nav>
+<div id="module-searchbar">
+  <input type="search" id="module-search" aria-label="Buscar en este módulo" placeholder="Buscar en este módulo…" class="ml-search-compact"/>
+  <button id="module-clear" type="button" class="ml-clear-btn">Limpiar</button>
+</div>
+<div id="module-stats" aria-live="polite"></div>
+
+<div class="ml-layout" data-ml="true">
+  <aside id="ml-sidebar" class="ml-sidebar ml-theme-light" aria-label="Navegación de contenidos">
+    <div class="ml-title">Contenido</div>
+    <nav id="ml-nav" class="ml-nav" role="navigation" aria-label="Secciones del módulo"></nav>
+  </aside>
+  <main id="ml-main" class="ml-main">
 <section class="module" id="m3_p1">
 <h2>1. Introducción a los GPTs</h2>
 <p>Los <strong>GPTs personalizados</strong> son configuraciones de ChatGPT orientadas a tareas específicas: se “entrenan” con <em>instrucciones</em> claras y pueden incorporar <strong>documentación propia</strong> (archivos, datos internos, procedimientos). El resultado es un asistente a medida que automatiza procesos sin requerir programación.</p>
@@ -837,9 +840,75 @@ document.addEventListener('DOMContentLoaded', () => {
   clearBtn.addEventListener('click', () => { input.value=''; input.focus(); apply(true); });
   apply(false);
 });
-</script></main>
+</script>
+  </main>
 </div>
-<!-- JS (modo oscuro, hamburguesa, footer dinámico) -->
-<script src="script.js"></script>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('module-search');
+  const clearBtn = document.getElementById('module-clear');
+  const stats = document.getElementById('module-stats');
+  const container = document.getElementById('ml-main') || document.getElementById('module-container') || document.querySelector('main') || document.body;
+  const navEl = document.querySelector('nav');
+
+  function updateOffsets(){
+    const navH = navEl ? navEl.offsetHeight : 0;
+    const sb = document.getElementById('module-searchbar');
+    const sbH = sb ? sb.offsetHeight : 0;
+    document.documentElement.style.setProperty('--nav-h', navH + 'px');
+    document.documentElement.style.setProperty('--searchbar-h', sbH + 'px');
+  }
+  updateOffsets();
+  window.addEventListener('resize', updateOffsets);
+
+  let blocks = Array.from(new Set([
+    ...container.querySelectorAll('section'),
+    ...container.querySelectorAll('article, .card, .module-block, .content-block')
+  ]));
+  if (blocks.length === 0) blocks = [container];
+
+  const total = blocks.length;
+  const strip = s => (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'');
+
+  function buildMap(s){ const map=[]; const norm=[]; let i=0; for (const ch of s){ const st=strip(ch); norm.push(st); for(let k=0;k<st.length;k++) map.push(i); i+=ch.length; } return { norm:norm.join(''), map }; }
+  function hi(el,q){ if(!el) return; if(!el.dataset.orig) el.dataset.orig = el.textContent; const orig=el.dataset.orig; if(!q){ el.innerHTML=orig; return; }
+    const {norm,map}=buildMap(orig); const qn=strip(q).toLowerCase(); let from=0,out='',last=0;
+    while(true){ const idx=norm.toLowerCase().indexOf(qn,from); if(idx===-1) break; const start=map[idx]; const end=(idx+qn.length<map.length)?map[idx+qn.length]:orig.length;
+      out += orig.slice(last,start) + '<mark>' + orig.slice(start,end) + '</mark>'; last=end; from=idx+qn.length; } out+=orig.slice(last); el.innerHTML=out; }
+
+  function scrollToFirstMatch(){
+    const first = container.querySelector('mark');
+    if(first){
+      first.scrollIntoView({behavior:'smooth', block:'start'});
+      const cs = getComputedStyle(document.documentElement);
+      const navH = parseInt(cs.getPropertyValue('--nav-h'))||0;
+      const sbH = parseInt(cs.getPropertyValue('--searchbar-h'))||0;
+      window.scrollBy({ top: -(navH + sbH + 8), left: 0, behavior: 'smooth' });
+    }
+  }
+
+  function apply(scroll){
+    const q = input.value.trim();
+    let visible = 0;
+    blocks.forEach(b => {
+      const hay = strip(b.textContent).toLowerCase();
+      const ok = !q || hay.includes(strip(q).toLowerCase());
+      b.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li').forEach(el => hi(el, ok ? q : ''));
+      if (blocks.length > 1) b.style.display = ok ? '' : 'none';
+      if (ok) visible++;
+    });
+    stats.textContent = `Mostrando ${visible} de ${total} secciones`;
+    if (scroll && q) scrollToFirstMatch();
+  }
+
+  input.addEventListener('input', () => apply(true));
+  clearBtn.addEventListener('click', () => { input.value=''; input.focus(); apply(true); });
+  apply(false);
+});
+</script>
+
 </body>
 </html>

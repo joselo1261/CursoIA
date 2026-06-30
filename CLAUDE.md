@@ -15,34 +15,35 @@ noticias). Público general / principiantes.
 ## Estructura
 
 ```
-index.html                 # Portada / hub de navegación (enlaza a las páginas activas)
-modulo1_introIA*.html      # Módulo 1: Introducción a la IA
-modulo2_chatgpt*.html      # Módulo 2: ChatGPT
-modulo3_gpts*.html         # Módulo 3: GPTs
-modulo4_gpts_avanzados*.html  # Módulo 4: GPTs avanzados
-herramientas*.html         # Catálogo de herramientas de IA
+index.html                 # Portada / hub de navegación
+modulo1_introIA.html       # Módulo 1: Introducción a la IA
+modulo2_chatgpt.html       # Módulo 2: ChatGPT
+modulo3_gpts.html          # Módulo 3: GPTs
+modulo4_gpts_avanzados.html  # Módulo 4: GPTs avanzados
+herramientas.html          # Catálogo de herramientas de IA
 glosario.html              # Glosario de términos
 noticias.html              # Noticias de IA
 contacto.html / contacto_dark.html  # Formulario de contacto (CSS/JS inline)
 style.css                  # Estilos base (tema claro/oscuro con variables CSS)
-style_ML.css               # Capa de estilos adicional para las páginas _ML
+style_ML.css               # Capa de estilos adicional (sidebar de módulos)
 script.js                  # JS base (navegación, buscador, tema)
-script_ML.js               # JS adicional para las páginas _ML
+script_ML.js               # JS adicional (sidebar de módulos)
 favicon.svg                # Favicon (chispa de IA, degradé azul marino → azul)
 *.png / *.svg              # Imágenes (InoTech, portada, infografías)
 ```
 
-## Convención importante: el sufijo `_ML`
+## Capas de estilos/JS (`_ML`)
 
-Varias páginas existen en dos versiones: base y `_ML` (ej. `modulo1_introIA.html` y
-`modulo1_introIA_ML.html`).
+Los módulos y `herramientas.html` cargan **dos capas**: la base (`style.css` + `script.js`)
+y una capa adicional con el sufijo `_ML` (`style_ML.css` + `script_ML.js`) que aporta el
+sidebar y funciones extra de los módulos.
 
-- **Las versiones `_ML` son las ACTIVAS**: son las que enlaza `index.html` y cargan una
-  capa extra encima de la base (`style.css` + `style_ML.css`, y `script.js` + `script_ML.js`).
-- **Las versiones sin `_ML` son iteraciones anteriores** que quedaron en el repo pero no
-  están enlazadas desde la navegación.
-- ⚠️ Al pedir cambios en "el módulo X", confirmá si aplican a la versión `_ML` (la publicada).
-  No asumas que hay que tocar ambas.
+- El sufijo `_ML` **solo sobrevive en los assets** (`style_ML.css`, `script_ML.js`).
+  Las páginas HTML ya NO lo usan: tienen nombres limpios (`modulo1_introIA.html`, etc.).
+- Antes existían "versiones simples" duplicadas de cada módulo; **fueron eliminadas** y las
+  `_ML` se renombraron a los nombres limpios. No recrees duplicados salvo pedido explícito.
+- Páginas que cargan la capa `_ML`: los 4 módulos + `herramientas.html`. El resto
+  (`index`, `glosario`, `noticias`, `contacto`) usan solo la capa base.
 
 ## Estilos y diseño
 

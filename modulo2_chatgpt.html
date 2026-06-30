@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Módulo 2: ChatGPT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Módulo 2: ChatGPT (ML)</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="style.css" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
 <style id="module-search-style">
 /* === Buscador de Módulo (sticky + paridad de estilos) === */
 #module-searchbar { 
@@ -39,40 +38,38 @@ nav .dropdown .dropdown-menu, nav .dropdown .dropdown-content { position: absolu
 
 /* Keep module2 titles visible */
 section[id^="m2_"], section#intro { scroll-margin-top: calc(var(--nav-h, 0px) + var(--searchbar-h, 0px) + 12px); }
-</style></head>
+</style>
+<link rel="stylesheet" href="style_ML.css">
+<script src="script_ML.js" defer></script>
+<script src="script.js" defer></script>
+</head>
 <body>
-<!-- Header consistente con Módulo 1 -->
 <header>
 <h1>Módulo 2: ChatGPT</h1>
 <p>Guía de Inteligencia Artificial - Curso 2025</p>
 </header>
 <div class="container">
-<!-- Nav idéntico en estructura al del Módulo 1 -->
 <nav>
-<ul id="main-nav-list">
-<li><a href="index.html">Inicio</a></li>
-<li class="dropdown">
-<a class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="">Contenido</a>
-<ul class="dropdown-menu">
-<li><a href="#m2_p1">1. LLMs: nuestra interacción con la IA</a></li>
-<li><a href="#m2_p2">2. Introducción a ChatGPT e interfaz</a></li>
-<li><a href="#m2_p3">3. Usando ChatGPT</a></li>
-<li><a href="#m2_p4">4. El Prompting</a></li>
-<li><a href="#m2_p5">5. Otras herramientas de ChatGPT</a></li>
-<li><a href="#m2_p6">6. Otras funciones avanzadas</a></li>
-<li><a href="#m2_p7">7. Prompt Engineering</a></li>
-<li><a href="#m2_p8">8. Ejemplos prácticos</a></li>
-<li><a href="#m2_p9">9. Modelos de razonamiento</a></li>
-<li><a href="#m2_p10">10. Los primeros agentes de IA</a></li>
-</ul>
-</li>
-<li><a href="herramientas.html">Herramientas</a></li>
-<li><a href="glosario.html">Glosario</a></li><li><a href="contacto.html">Contacto</a></li>
-</ul>
-<button id="theme-toggle">🌙</button>
-<button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
-</nav><div id="module-searchbar"><input aria-label="Buscar en este módulo" id="module-search" placeholder="Buscar en este módulo…" type="search"/><button id="module-clear" type="button">Limpiar</button></div><div aria-live="polite" id="module-stats"></div>
-<main id="module-container">
+  <ul id="main-nav-list">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="herramientas.html">Herramientas</a></li>
+    <li><a href="glosario.html">Glosario</a></li>
+    <li><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <button id="theme-toggle">🌙</button>
+  <button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
+</nav>
+<div id="module-searchbar">
+  <input type="search" id="module-search" aria-label="Buscar en este módulo" placeholder="Buscar en este módulo…" class="ml-search-compact"/>
+  <button id="module-clear" type="button" class="ml-clear-btn">Limpiar</button>
+</div>
+<div id="module-stats" aria-live="polite"></div>
+<div class="ml-layout" data-ml="true">
+  <aside id="ml-sidebar" class="ml-sidebar ml-theme-light" aria-label="Navegación de contenidos">
+    <div class="ml-title">Contenido</div>
+    <nav id="ml-nav" class="ml-nav" role="navigation" aria-label="Secciones del módulo"></nav>
+  </aside>
+  <main id="ml-main" class="ml-main">
 <section class="module" id="m2_p1">
 <h2>1. LLMs y nuestra interacción con la IA</h2>
 <p>Un <strong>Modelo de Lenguaje Grande (LLM)</strong> predice el próximo token a partir de <em>contexto</em>. Con interfaces modernas podemos trabajar no solo con texto sino también con <strong>imágenes</strong>, <strong>audio/voz</strong> y, según el modelo, <strong>video</strong>.</p>
@@ -739,12 +736,15 @@ Entrega:
 </div>
 <div class="callout"><strong>Cierre:</strong> elegí el agente según tu objetivo (investigar vs ejecutar en web), coste/latencia y disponibilidad.</div>
 </section>
+  </main>
+</div>
+</div>
 <script id="module-search-script">
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('module-search');
   const clearBtn = document.getElementById('module-clear');
   const stats = document.getElementById('module-stats');
-  const container = document.getElementById('module-container') || document.querySelector('main') || document.body;
+  const container = document.getElementById('ml-main') || document.getElementById('module-container') || document.querySelector('main') || document.body;
   const navEl = document.querySelector('nav');
 
   function updateOffsets(){
@@ -774,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
       out += orig.slice(last,start) + '<mark>' + orig.slice(start,end) + '</mark>'; last=end; from=idx+qn.length; } out+=orig.slice(last); el.innerHTML=out; }
 
   function scrollToFirstMatch(){
-    const first = document.querySelector('#module-container mark');
+    const first = container.querySelector('mark');
     if(first){
       first.scrollIntoView({behavior:'smooth', block:'start'});
       const cs = getComputedStyle(document.documentElement);
@@ -803,9 +803,6 @@ document.addEventListener('DOMContentLoaded', () => {
   clearBtn.addEventListener('click', () => { input.value=''; input.focus(); apply(true); });
   apply(false);
 });
-</script></main>
-</div>
-<!-- JS de la guía (modo oscuro, hamburguesa, dropdown) -->
-<script src="script.js"></script>
+</script>
 </body>
 </html>
