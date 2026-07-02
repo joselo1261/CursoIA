@@ -1,0 +1,32 @@
+/* ============================================================
+   home.css — Tarjetas de bienvenida del index (extraído del inline)
+   Usa las variables de tema de style.css (claro/oscuro automático).
+   ============================================================ */
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 1rem 0 1.5rem;
+}
+.home-card {
+  background: var(--bg-secondary-color);
+  border: 1px solid var(--border-color);
+  padding: 16px 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px var(--shadow-color);
+}
+.home-card h3 {
+  margin-top: 0;
+}
+.home-card ul {
+  padding-left: 1.1rem;
+  margin: 0.4rem 0 0;
+}
+.home-card p {
+  margin: 0.4rem 0 0;
+}
