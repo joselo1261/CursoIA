@@ -51,11 +51,16 @@ favicon.svg                # Favicon (chispa de IA, degradé azul marino → azu
 
 ## Sidebar global (todas las páginas de contenido)
 
-Todas las páginas de contenido (`index`, módulos 1-4, `herramientas.html`) usan un
-**sidebar tipo "docs"**: una sola barra lateral persistente que lista todos los
-módulos/unidades del curso, con las secciones de la página actual desplegadas debajo.
-La migración desde el sidebar viejo (capa `_ML`) ya se completó; esos archivos
-(`css/style_ML.css`, `js/script_ML.js`) fueron borrados.
+Todas las páginas de contenido (`index`, módulos 1-4, `herramientas.html`, `glosario.html`,
+`noticias.html`) usan un **sidebar tipo "docs"**: una sola barra lateral persistente que
+lista todos los módulos/unidades del curso, con las secciones de la página actual
+desplegadas debajo. La migración desde el sidebar viejo (capa `_ML`) ya se completó; esos
+archivos (`css/style_ML.css`, `js/script_ML.js`) fueron borrados.
+
+- **`contacto.html` / `contacto_dark.html` quedan afuera a propósito**: tienen un diseño
+  propio standalone (tarjeta oscura con degradé, tipografía y layout distintos a la base
+  del sitio) sin la estructura `.container`/header estándar. No les agregues el sidebar
+  salvo pedido explícito del usuario.
 
 - **`js/nav-data.js`** es el ÚNICO archivo que se edita para agregar una unidad: una
   entrada `{ label, href }` por módulo. El sidebar se arma solo a partir de esa lista.
@@ -106,9 +111,9 @@ solo datos y la página se arma sola. Ver la guía completa en
 
 El sidebar viejo se servía con la capa `_ML` (`css/style_ML.css` + `js/script_ML.js`).
 Ya **no existe**: todas las páginas de contenido (`index`, módulos 1-4,
-`herramientas.html`) migraron al sidebar global tipo docs. `glosario`, `noticias` y
-`contacto` nunca usaron `_ML` (solo capa base) y siguen con su nav propio.
-No recrees versiones duplicadas de los módulos salvo pedido explícito.
+`herramientas.html`, `glosario.html`, `noticias.html`) migraron al sidebar global tipo
+docs. `contacto.html`/`contacto_dark.html` nunca usaron `_ML` y quedan con su diseño
+propio (ver arriba). No recrees versiones duplicadas de los módulos salvo pedido explícito.
 
 ## Estilos y diseño
 

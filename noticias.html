@@ -7,31 +7,26 @@
 <title>Noticias de IA</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="css/style.css" rel="stylesheet"/>
+  <!-- Sidebar global tipo docs -->
+  <link rel="stylesheet" href="css/sidebar.css"/>
+  <script src="js/nav-data.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
 </head>
 <body class="page-noticias">
 <header>
 <h1>Noticias de Inteligencia Artificial</h1>
 <p>Mantente al día con las novedades más relevantes en español y en inglés.</p>
 </header>
-<div class="container">
+<div class="container docs-page">
 <nav>
-<ul id="main-nav-list">
-<li><a href="index.html">Inicio</a></li>
-<li class="highlight-contenido dropdown">
-<a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle" href="">Contenido</a>
-<ul class="dropdown-menu">
-<li><a href="#noticias-es">Noticias en Español</a></li>
-<li><a href="#noticias-en">Noticias en Inglés</a></li>
-<li><a href="#youtube-es">Youtube</a></li>
-</ul>
-</li>
-<li><a href="herramientas.html">Herramientas</a></li>
-<li><a href="glosario.html">Glosario</a></li><li><a href="contacto.html">Contacto</a></li>
-</ul>
+<ul id="main-nav-list"></ul>
 <button aria-label="Cambiar tema" id="theme-toggle">🌙</button>
-<button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
 </nav>
-<main>
+<div class="docs-layout">
+  <aside class="docs-sidebar" id="docs-sidebar" aria-label="Navegación del curso">
+    <nav id="docs-nav" class="docs-nav" role="navigation" aria-label="Contenido del curso"></nav>
+  </aside>
+  <main id="docs-main" class="docs-main">
 <!-- ESPAÑOL -->
 <section class="module" id="noticias-es">
 <h2>Noticias en Español</h2>
@@ -97,7 +92,8 @@
 <h6>Migue Baena IA</h6><p>IA aplicada y herramientas</p>
 </a><a class="link-card" href="https://www.youtube.com/@mouredev" rel="noopener noreferrer" target="_blank"><h6>MoureDev by Brais Moure</h6><p>Programación y proyectos; IA aplicada</p></a></div>
 </section>
-</main>
+  </main>
+</div>
 </div>
 <script src="js/script.js"></script>
 </body>

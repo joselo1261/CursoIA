@@ -54,23 +54,27 @@
     border-bottom-color: rgba(255,255,255,.15);
   }
 }
-</style></head>
+</style>
+  <!-- Sidebar global tipo docs -->
+  <link rel="stylesheet" href="css/sidebar.css"/>
+  <script src="js/nav-data.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
+</head>
 <body id="top">
 <header>
 <h1>Glosario de Inteligencia Artificial</h1>
 <p>Diccionario de términos claves y definiciones</p>
 </header>
-<div class="container">
+<div class="container docs-page">
 <nav>
-<ul id="main-nav-list">
-<li><a href="index.html">Inicio</a></li>
-<li><a href="herramientas.html">Herramientas</a></li>
-<li><a href="contacto.html">Contacto</a></li>
-</ul>
+<ul id="main-nav-list"></ul>
 <button id="theme-toggle">🌙</button>
-<button aria-label="Toggle navigation" class="hamburger-menu">☰</button>
 </nav>
-<main>
+<div class="docs-layout">
+  <aside class="docs-sidebar" id="docs-sidebar" aria-label="Navegación del curso">
+    <nav id="docs-nav" class="docs-nav" role="navigation" aria-label="Contenido del curso"></nav>
+  </aside>
+  <main id="docs-main" class="docs-main">
 <section class="module" id="glosario-content">
 <h2>Glosario de Términos Clave</h2>
 <div class="alphabet-nav"><a href="#A">A</a><a href="#B">B</a><a href="#C">C</a><a href="#D">D</a><a href="#E">E</a><a href="#F">F</a><a href="#G">G</a><a href="#H">H</a><a href="#I">I</a><a href="#J">J</a><a href="#K">K</a><a href="#L">L</a><a href="#M">M</a><a href="#N">N</a><a href="#O">O</a><a href="#P">P</a><a href="#Q">Q</a><a href="#R">R</a><a href="#S">S</a><a href="#T">T</a><a href="#U">U</a><a href="#V">V</a><a href="#W">W</a><a href="#X">X</a><a href="#Y">Y</a><a href="#Z">Z</a></div><div id="glossary-searchbar"><input aria-label="Buscar término o definición" id="glossary-search" placeholder="Buscar término o definición…" type="search"/><button id="glossary-clear" type="button">Limpiar</button></div><div aria-live="polite" id="glossary-stats"></div>
@@ -404,7 +408,8 @@ document.addEventListener('DOMContentLoaded', () => {
   applyFilter(false);
 });
 </script></section>
-</main>
+  </main>
+</div>
 <footer>
 </footer>
 </div>
