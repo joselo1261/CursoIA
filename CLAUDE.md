@@ -31,17 +31,16 @@ COMO-CREAR-UN-MODULO.md    # Guía: cómo crear módulos con el motor dinámico
 
 css/                       # TODO el CSS vive acá
   style.css                # Estilos base + componentes/infografías (tema claro/oscuro)
-  sidebar.css              # Sidebar global tipo "docs" (sistema nuevo)
-  module.css               # Buscador interno de módulos
-  style_ML.css             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
+  sidebar.css              # Sidebar global tipo "docs"
+  module.css               # Buscador interno de módulos / catálogo de herramientas
+  home.css                 # Tarjetas de bienvenida del index
 
 js/                        # TODO el JS vive acá
   script.js                # JS base (navegación, buscador, tema, footer)
   nav-data.js              # Manifiesto: lista de módulos/unidades del sidebar global
   sidebar.js               # Construye el sidebar global tipo "docs"
   renderer.js              # MOTOR dinámico: convierte data/<modulo>.js en página
-  module-search.js         # Buscador interno de módulos
-  script_ML.js             # Capa legacy (sidebar viejo, aún usada por mód. 2-4 + herramientas)
+  module-search.js         # Buscador interno de módulos (y de tarjetas en herramientas.html)
 
 data/                      # Contenido de los módulos dinámicos (solo datos, sin diseño)
   modulo_demo.js           # Ejemplo de referencia
@@ -50,26 +49,32 @@ favicon.svg                # Favicon (chispa de IA, degradé azul marino → azu
 *.png / *.svg              # Imágenes (InoTech, portada, infografías) — siguen en la raíz
 ```
 
-> **Migración en curso:** se está reemplazando el sidebar viejo (`_ML`) por un
-> **sidebar global tipo docs** (`css/sidebar.css` + `js/sidebar.js` + `js/nav-data.js`).
-> El **Módulo 1 ya está migrado** (no carga `_ML`). El resto (mód. 2-4 + `herramientas.html`)
-> todavía usa la capa `_ML` hasta replicar el patrón.
+## Sidebar global (todas las páginas de contenido)
 
-## Sidebar global (sistema nuevo)
-
-El sistema nuevo es un **sidebar tipo "docs"**: una sola barra lateral persistente que
-lista todos los módulos/unidades, con las secciones del módulo actual desplegadas debajo.
+Todas las páginas de contenido (`index`, módulos 1-4, `herramientas.html`) usan un
+**sidebar tipo "docs"**: una sola barra lateral persistente que lista todos los
+módulos/unidades del curso, con las secciones de la página actual desplegadas debajo.
+La migración desde el sidebar viejo (capa `_ML`) ya se completó; esos archivos
+(`css/style_ML.css`, `js/script_ML.js`) fueron borrados.
 
 - **`js/nav-data.js`** es el ÚNICO archivo que se edita para agregar una unidad: una
   entrada `{ label, href }` por módulo. El sidebar se arma solo a partir de esa lista.
 - **`js/sidebar.js`** lee el manifiesto, detecta la página actual, lista sus secciones
-  (`<section class="module" id="...">` con su `<h2>`), resalta la activa al hacer scroll
-  y maneja el modo móvil (off-canvas).
+  y maneja el modo móvil (off-canvas). Reconoce dos formas de sección navegable:
+  `<section class="module" id="..."><h2>` (módulos de texto largo) y
+  `<div class="category-section" id="..."><h3>` (páginas de catálogo, como
+  `herramientas.html`).
 - **`css/sidebar.css`** estiliza el sidebar usando las variables de tema de `style.css`
   (claro/oscuro automático).
 - Markup requerido en la página: `<div class="container docs-page">` y dentro
   `<div class="docs-layout"> <aside id="docs-sidebar"><nav id="docs-nav"></nav></aside>
   <main id="docs-main">…secciones…</main> </div>`.
+- La barra superior (`<nav>`) de estas páginas ya **no repite** los links del sidebar
+  (Inicio/Módulos/Herramientas/etc.) — solo queda el botón de tema. Todo el listado de
+  contenido vive en el sidebar para no duplicar navegación.
+- **`js/module-search.js`** es el buscador compartido: filtra por `<section class="module">`
+  en los módulos, o tarjeta por tarjeta (`.tool-card`) en `herramientas.html`, ocultando
+  además `.category-section`/`section` que se quedan sin resultados visibles.
 
 ## Motor de módulos dinámicos
 
@@ -97,14 +102,13 @@ solo datos y la página se arma sola. Ver la guía completa en
 > `innerHTML` de elementos que contienen otros elementos; los aplanaba (rompía la línea de
 > tiempo). El guard `if (el.children.length > 0) return;` en `hi()` lo evita. No lo quites.
 
-## Capa legacy `_ML` (en retirada)
+## Capa legacy `_ML` (retirada)
 
 El sidebar viejo se servía con la capa `_ML` (`css/style_ML.css` + `js/script_ML.js`).
-
-- **Módulo 1 ya NO usa `_ML`**: migrado al sidebar global. Es la página de referencia.
-- Todavía cargan `_ML`: **módulos 2-4 + `herramientas.html`** (pendientes de migrar).
-- `index`, `glosario`, `noticias`, `contacto` nunca usaron `_ML` (solo capa base).
-- No recrees versiones duplicadas de los módulos salvo pedido explícito.
+Ya **no existe**: todas las páginas de contenido (`index`, módulos 1-4,
+`herramientas.html`) migraron al sidebar global tipo docs. `glosario`, `noticias` y
+`contacto` nunca usaron `_ML` (solo capa base) y siguen con su nav propio.
+No recrees versiones duplicadas de los módulos salvo pedido explícito.
 
 ## Estilos y diseño
 

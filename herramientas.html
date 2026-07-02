@@ -3,58 +3,25 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Herramientas (ML)</title>
+<title>Herramientas</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/style.css"/>
-<style id="module-search-style">
-/* === Buscador (sticky + paridad de estilos) === */
-#module-searchbar { 
-  display:flex; gap:.5rem; align-items:center; margin: 8px 0 14px; padding: 0 12px; 
-  position: sticky; top: var(--nav-h, 0px); z-index: 900;
-  background: var(--bg-secondary-color, #fff);
-  border-bottom: 1px solid var(--border-color, #e0e0e0);
-}
-#module-searchbar input[type="search"]{
-  flex:1; min-width: 280px; max-width: 820px; padding:10px 12px; border: 1.8px solid transparent;
-  border-radius:8px; font-size:1rem; background: transparent; color: inherit;
-}
-#module-clear{ padding:8px 10px; border:1.5px solid #000; border-radius:8px; cursor:pointer; background: var(--bg-secondary-color, #fff); color: var(--text-color, #111); }
-#module-clear:hover{ filter: brightness(0.97); }
-#module-stats{ margin: 0 12px 8px; font-size:.9rem; color: var(--muted-color, #6b7280); }
-#module-container mark { background:#fff2ac; color:inherit; padding:0 .1em; border-radius:2px; }
-/* Evitar que el header tape títulos al saltar */
-#module-container h1, 
-#module-container h2, 
-#module-container h3, 
-#module-container h4 { scroll-margin-top: calc(var(--nav-h, 0px) + var(--searchbar-h, 0px) + 8px); }
-@media (prefers-color-scheme: dark){
-  #module-searchbar{ background: var(--bg-color, #0f1218); border-bottom-color: rgba(255,255,255,.15); }
-  #module-searchbar input[type="search"]{ border-color: transparent; }
-  #module-clear{ background: var(--primary-color, #8b5cf6); color: var(--primary-text-color, #fff); border-color: var(--primary-color, #8b5cf6); }
-}
-/* FIX dropdown above searchbar */
-nav .dropdown .dropdown-menu, nav .dropdown .dropdown-content { position: absolute; z-index: 1200; }
-/* Anchors visible */
-section[id^="tools-"], h2[id^="tools-"] { scroll-margin-top: calc(var(--nav-h, 0px) + var(--searchbar-h, 0px) + 12px); }
-</style>
-<link rel="stylesheet" href="css/style_ML.css"/>
-<script defer src="js/script_ML.js"></script>
-<script defer src="js/script.js"></script>
+<link rel="stylesheet" href="css/module.css"/>
+  <!-- Sidebar global tipo docs -->
+  <link rel="stylesheet" href="css/sidebar.css"/>
+  <script src="js/nav-data.js" defer></script>
+  <script src="js/sidebar.js" defer></script>
+  <script src="js/module-search.js" defer></script>
 </head>
 <body>
 <header>
   <h1>Herramientas</h1>
   <p>Guía de Inteligencia Artificial - Curso 2025</p>
 </header>
-<div class="container" id="module-container">
+<div class="container docs-page" id="module-container">
   <nav>
-    <ul id="main-nav-list">
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="glosario.html">Glosario</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
-    </ul>
-    <button id="theme-toggle">🌙</button>
-    <button class="hamburger-menu" aria-label="Toggle navigation">☰</button>
+<ul id="main-nav-list"></ul>
+<button id="theme-toggle">🌙</button>
   </nav>
 
   <!-- Searchbar -->
@@ -64,13 +31,12 @@ section[id^="tools-"], h2[id^="tools-"] { scroll-margin-top: calc(var(--nav-h, 0
   </div>
   <div id="module-stats" aria-live="polite"></div>
 
-  <div class="ml-layout" data-ml="true">
-    <aside id="ml-sidebar" class="ml-sidebar ml-theme-light" aria-label="Navegación lateral">
-      <div class="ml-title">Contenido</div>
-      <nav id="ml-nav" class="ml-nav" role="navigation" aria-label="Secciones de esta página"></nav>
+  <div class="docs-layout">
+    <aside class="docs-sidebar" id="docs-sidebar" aria-label="Navegación del curso">
+      <nav id="docs-nav" class="docs-nav" role="navigation" aria-label="Contenido del curso"></nav>
     </aside>
 
-    <main id="ml-main" class="ml-main">
+    <main id="docs-main" class="docs-main">
       <!-- === Tarjetas existentes (mantenidas) === -->
       <div class="category-section" id="tools-automatizaciones">
         <h3>Automatizaciones</h3>
@@ -362,27 +328,6 @@ section[id^="tools-"], h2[id^="tools-"] { scroll-margin-top: calc(var(--nav-h, 0
   </div>
 </div>
 
-<script>
-// set --searchbar-h
-document.addEventListener('DOMContentLoaded', function(){
-  const sb = document.getElementById('module-searchbar');
-  function upd(){ if(!sb) return; document.documentElement.style.setProperty('--searchbar-h', (sb.getBoundingClientRect().height||0)+'px'); }
-  upd(); window.addEventListener('resize', upd, {passive:true});
-});
-</script>
-<script id="module-search-script">
-document.addEventListener('DOMContentLoaded', () => {
-  const navEl = document.querySelector('nav');
-  function updateOffsets(){
-    const navH = navEl ? navEl.offsetHeight : 0;
-    const sb = document.getElementById('module-searchbar');
-    const sbH = sb ? sb.offsetHeight : 0;
-    document.documentElement.style.setProperty('--nav-h', navH + 'px');
-    document.documentElement.style.setProperty('--searchbar-h', sbH + 'px');
-  }
-  updateOffsets();
-  window.addEventListener('resize', updateOffsets);
-});
-</script>
+<script src="js/script.js"></script>
 </body>
 </html>

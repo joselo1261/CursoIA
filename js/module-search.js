@@ -26,11 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
   updateOffsets();
   window.addEventListener('resize', updateOffsets);
 
-  // Target: bloques del módulo (secciones + tarjetas conocidas)
-  let blocks = Array.from(new Set([
-    ...container.querySelectorAll('section'),
-    ...container.querySelectorAll('article, .card, .module-block, .content-block')
-  ]));
+  // Target: bloques del módulo (secciones + tarjetas conocidas).
+  // En páginas de catálogo (p. ej. herramientas.html) el bloque atómico
+  // es cada .tool-card; ahí filtramos tarjeta por tarjeta en vez de sección.
+  const toolCards = Array.from(container.querySelectorAll('.tool-card'));
+  let blocks = toolCards.length
+    ? toolCards
+    : Array.from(new Set([
+        ...container.querySelectorAll('section'),
+        ...container.querySelectorAll('article, .card, .module-block, .content-block')
+      ]));
   if (blocks.length === 0) blocks = [container];
 
   const total = blocks.length;
@@ -79,11 +84,22 @@ document.addEventListener('DOMContentLoaded', () => {
     blocks.forEach(b => {
       const hay = strip(b.textContent).toLowerCase();
       const ok = !q || hay.includes(strip(q).toLowerCase());
-      b.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li').forEach(el => hi(el, ok ? q : ''));
+      b.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,a').forEach(el => hi(el, ok ? q : ''));
       if (blocks.length > 1) b.style.display = ok ? '' : 'none';
       if (ok) visible++;
     });
-    stats.textContent = `Mostrando ${visible} de ${total} secciones`;
+    // Ocultar contenedores (section / .category-section) que se quedaron sin
+    // ningún bloque visible adentro — evita títulos de categoría "huérfanos".
+    if (blocks.length > 1) {
+      Array.from(container.querySelectorAll('section, .category-section')).forEach(sec => {
+        const childBlocks = blocks.filter(b => b !== sec && sec.contains(b));
+        if (!childBlocks.length) return;
+        sec.style.display = childBlocks.some(b => b.style.display !== 'none') ? '' : 'none';
+      });
+    }
+    stats.textContent = toolCards.length
+      ? `Mostrando ${visible} de ${total} herramientas`
+      : `Mostrando ${visible} de ${total} secciones`;
     if (scroll && q) scrollToFirstMatch();
   }
 

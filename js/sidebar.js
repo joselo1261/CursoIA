@@ -11,6 +11,8 @@
      </aside>
      <main id="docs-main" class="docs-main"> ...secciones... </main>
    Cada sección navegable: <section class="module" id="..."><h2>Título</h2>
+   (o <div class="category-section" id="..."><h3>Título</h3> para páginas
+   de tipo catálogo, como herramientas.html)
    ============================================================ */
 (function () {
   function init() {
@@ -31,11 +33,12 @@
     title.textContent = "Contenido del curso";
     nav.appendChild(title);
 
-    /* --- Secciones de la página actual (section.module con id + h2) --- */
+    /* --- Secciones de la página actual (section.module[id] con h2,
+       o .category-section[id] con h3 — p. ej. herramientas.html) --- */
     var sections = Array.prototype.slice
-      .call(main.querySelectorAll("section.module[id]"))
+      .call(main.querySelectorAll("section.module[id], .category-section[id]"))
       .map(function (s) {
-        var h = s.querySelector("h2");
+        var h = s.querySelector("h2, h3");
         return h ? { id: s.id, text: h.textContent.trim() } : null;
       })
       .filter(Boolean);
